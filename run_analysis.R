@@ -24,10 +24,11 @@ AnalysisScript <- function(datasource = "https://d396qusza40orc.cloudfront.net/g
                      type = "directory",
                      glob = paste0("*",foldername))
  
-   if (identical(zippaths, character(0)) &&                                     # If the archive name & folder name isn't found, download archive
-       identical(dirpaths, character(0))){
+   if (!length(zippaths) && !length(dirpaths)){                                 # If the archive name & folder name isn't found, download archive
     download.file(datasource, archivename, method="curl")
-  } else if (identical(dirpaths, character(0))) {                               # If the folder name isn't found, unzip archive and change working directory
+     unzip(archivename)
+     setwd(foldername)
+  } else if (!length(dirpaths)) {                                               # If the folder name isn't found, unzip archive and change working directory
     unzip(archivename)
     setwd(foldername)                                                           # Go to directory to prepare to work with files
   } else if ( grepl(pattern = paste0(foldername,"$"), oldwd) ){                 # Check if working directory is already the desired location or not
